@@ -2,10 +2,15 @@
 
 namespace tests\PageObject;
 
+use Exception;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverWait;
 
-class PageTestForm
+use function PHPUnit\Framework\throwException;
+
+class PageCreateLogin
 {
     private WebDriver $driver;
 
@@ -23,30 +28,50 @@ class PageTestForm
     public function fillName(string $name)
     {
         $inputName = WebDriverBy::cssSelector('input[name="firstname"]');
+        if(!$inputName){
+            throw new Exception("Elemento não encontrado");
+        }
+
         $this->driver->findElement($inputName)->sendKeys($name);
     }
 
     public function fillLastName(string $lastName)
     {
-        $inputName = WebDriverBy::cssSelector('input[name="lastname"]');
-        $this->driver->findElement($inputName)->sendKeys($lastName);
+        $inputLastName = WebDriverBy::cssSelector('input[name="lastname"]');
+        if(!$inputLastName){
+            throw new Exception("Elemento não encontrado");
+        }
+        $this->driver->findElement($inputLastName)->sendKeys($lastName);
     }
 
     public function chooseGender()
     {
         $radioGender = WebDriverBy::id("sex-0");
+
+        if(!$radioGender){
+            throw new Exception("Elemento não encontrado");
+        }
+
         $this->driver->findElement($radioGender)->click();
     }
 
     public function yearsExp()
     {
         $radioYears = WebDriverBy::id("exp-0");
+        if(!$radioYears){
+            throw new Exception("Elemento não encontrado");
+        }
+
         $this->driver->findElement($radioYears)->click();
     }
 
     public function dateBirthday(string $birthday)
     {
         $inputDateBirthday = WebDriverBy::id("datepicker");
+        if(!$inputDateBirthday){
+            throw new Exception("Elemento não encontrado");
+        }
+        
         $this->driver->findElement($inputDateBirthday)->sendKeys($birthday);
     }
 
@@ -91,9 +116,5 @@ class PageTestForm
         $this->driver->findElement($linkToDownload)->click();
     }
 
-    public function submitButton()
-    {
-        $button = WebDriverBy::id("submit");
-        $this->driver->findElement($button)->click();
-    }
+    
 }
